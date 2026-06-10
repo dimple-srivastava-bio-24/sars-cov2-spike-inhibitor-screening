@@ -1,0 +1,56 @@
+Ligand,Protein,Binding_Energy,Mol_Weight,LogP,HBond_Donors,HBond_Acceptors,Rotatable_Bonds,TPSA,Aromatic_Rings,Lipinski_Pass
+Hesperidin,6VXX,-10.417,302.28,2.52,3,6,2,96.22,2,True
+Lumacaftor,6MOJ,-8.607,452.41,4.75,2,5,5,97.75,3,True
+Oxyberberine,7DWZ,-8.583,351.36,2.97,0,5,2,58.92,3,True
+Brazilin,6VXX,-8.34,286.28,1.61,4,5,0,90.15,2,True
+Celecoxib,6VXX,-8.34,381.38,3.51,1,3,3,77.98,3,True
+Meloxicam,6VXX,-8.23,351.41,1.95,2,6,2,99.6,2,True
+Mevastatin,7DWZ,-8.163,390.52,3.95,1,5,6,72.83,0,True
+Andrographolide,7DWZ,-8.067,350.46,1.96,3,5,3,86.99,0,True
+SSAA09E3,6MOJ,-7.89,327.34,3.71,1,3,2,63.24,3,True
+Ilimaquinone,7DWZ,-7.888,358.48,4.67,1,4,3,63.6,0,True
+Schisandrin B,7DWZ,-7.886,400.47,4.49,0,6,4,55.38,2,True
+Indomethacin,6VXX,-7.844,357.79,3.93,1,3,4,68.53,3,True
+Rhamnocitrin,7DWZ,-7.797,300.27,2.59,3,6,2,100.13,3,True
+Dihydrokaempferol,7DWZ,-7.711,288.25,1.48,4,6,1,107.22,2,True
+Kaempferol,7DWZ,-7.694,286.24,2.28,4,6,1,111.13,3,True
+Simvastatin,7DWZ,-7.68,418.57,4.59,1,5,6,72.83,0,True
+Afzelechin,7DWZ,-7.573,274.27,1.84,4,5,1,90.15,2,True
+Isorhamnetin,7DWZ,-7.502,316.27,2.29,4,7,2,120.36,3,True
+Emodin,7DWZ,-7.402,270.24,1.89,3,5,0,94.83,2,True
+Retusin,7DWZ,-7.366,358.35,3.2,1,7,5,87.36,3,True
+CKP-25,6MOJ,-7.343,288.35,4.25,0,2,3,27.05,4,True
+Chrysosplenetin,7DWZ,-7.207,374.35,2.91,2,8,5,107.59,3,True
+Lovastatin,7DWZ,-7.206,404.55,4.2,1,5,6,72.83,0,True
+Dolutegravir,6MOJ,-7.166,419.38,1.35,2,5,3,100.87,2,True
+Rutaecarpine,6MOJ,-7.02,287.32,3.1,1,2,0,50.68,4,True
+Curcumin,7DWZ,-6.941,368.39,3.37,2,6,8,93.06,2,True
+Pterostilbene,6VXX,-6.927,256.3,3.58,1,3,4,38.69,2,True
+Pravastatin,7DWZ,-6.849,424.53,2.44,4,6,10,124.29,0,True
+Nimesulide,6VXX,-6.84,308.31,2.76,1,5,5,98.54,2,True
+Minocycline,6MOJ,-6.799,457.48,0.03,5,9,3,164.63,1,True
+Resveratrol,6VXX,-6.748,228.25,2.97,3,3,2,60.69,2,True
+Loratadine,6MOJ,-6.743,382.89,4.89,0,3,1,42.43,2,True
+Calpeptin,7DWZ,-6.731,362.47,3.2,2,4,11,84.5,1,True
+Niclosamide,6MOJ,-6.661,327.12,3.86,2,4,3,92.47,2,True
+Camostat,6MOJ,-6.658,398.42,0.98,2,6,7,137.31,2,True
+β-caryophyllene,7DWZ,-6.649,204.36,4.73,0,0,0,0.0,0,True
+Naproxen,6VXX,-6.472,230.26,3.04,1,2,3,46.53,2,True
+NSC36398,6MOJ,-6.395,304.25,1.19,5,7,1,127.45,2,True
+NSC281245,6MOJ,-6.337,390.52,3.95,1,5,6,72.83,0,True
+Cetirizine,6MOJ,-6.3,388.9,3.15,1,4,8,53.01,2,True
+Fagaronine,6MOJ,-6.292,350.39,3.7,1,4,3,51.8,4,True
+Linezolid,6MOJ,-6.279,337.35,1.12,1,5,4,71.11,1,True
+Ibuprofen,6VXX,-6.252,206.28,3.07,1,1,4,37.3,1,True
+Etravirine,6MOJ,-6.052,435.29,4.72,2,7,4,120.64,3,True
+Aspirin,6VXX,-5.837,180.16,1.31,1,3,2,63.6,1,True
+Quiniline 2 carboxylic acid,6MOJ,-5.815,185.12,1.93,1,2,1,50.19,2,True
+Ferulic acid,7DWZ,-5.791,194.19,1.5,2,3,3,66.76,1,True
+Diphenhydramine,6MOJ,-5.598,255.36,3.35,0,2,6,12.47,2,True
+Cannabigerovarinic acid,6MOJ,-5.447,332.44,4.98,3,3,8,77.76,1,True
+Promethazine,6MOJ,-5.383,284.43,4.24,0,3,3,6.48,2,True
+Chloroquine,6MOJ,-5.38,319.88,4.81,1,3,8,28.16,2,True
+Paracetamol,6VXX,-5.239,151.16,1.35,2,2,1,49.33,1,True
+Chlorpromazine,6MOJ,-5.233,318.87,4.89,0,3,4,6.48,2,True
+Phenyl Carbamate,6MOJ,-5.017,137.14,1.14,1,2,1,52.32,1,True
+Favipiravir,6MOJ,-4.246,157.1,-0.99,2,3,1,88.84,1,True
