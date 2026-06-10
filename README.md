@@ -215,7 +215,8 @@ png docking_complex.png
 Molecular Docking Structure-Based Drug Design Virtual Screening
 Bioinformatics Linux Command Line Bash Scripting
 Python RDKit Scientific Data Analysis
-Protein–Ligand Interaction Analysis Computational Drug Discovery
+Protein–Ligand Interaction Analysis 
+Computational Drug Discovery
 AutoDock Vina PyMOL Open Babel
 
 ---
