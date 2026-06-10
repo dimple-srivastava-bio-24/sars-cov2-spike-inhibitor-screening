@@ -163,7 +163,7 @@ done
 
 bash
 for f in *_out.pdbqt; do
-    energy=$(grep "REMARK VINA RESULT" "$f" | head -n 1 | awk '{print $4}')
+    energy=$(grep "REMARK VINA RESULT" "$f" | head -n 1 | awk '(print $4)')
     echo "$(basename "$f" _out.pdbqt),$energy"
 done > results.csv
 
