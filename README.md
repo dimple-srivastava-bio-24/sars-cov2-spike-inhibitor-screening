@@ -1,13 +1,13 @@
 # 🧬 SARS-CoV-2 Spike Protein Inhibitor Screening
 
-*Dimple Srivastava | MSc Biotechnology*
-*Jamia Hamdard, Department of Virology, New Delhi | June 2026*
+**Dimple Srivastava | MSc Biotechnology**  
+**Jamia Hamdard, Department of Virology, New Delhi | June 2026**
 
 ---
 
 ## 📌 Project Overview
 
-This project presents a complete *virtual screening and molecular docking pipeline* for identifying potential SARS-CoV-2 spike protein inhibitors. 85 bioactive and drug compounds were screened against three SARS-CoV-2 spike protein targets using AutoDock Vina, followed by RDKit-based post-docking analysis, Lipinski drug-likeness filtering, and data visualization.
+A complete **virtual screening and molecular docking pipeline** for identifying potential SARS-CoV-2 spike protein inhibitors. 85 bioactive and drug compounds were screened against three SARS-CoV-2 spike protein targets using AutoDock Vina, followed by RDKit-based post-docking analysis, Lipinski drug-likeness filtering, ADMET profiling, PCA, and heatmap visualization.
 
 ---
 
@@ -17,8 +17,8 @@ This project presents a complete *virtual screening and molecular docking pipeli
 - Prepare and optimize 85 ligand structures for virtual screening
 - Perform molecular docking simulations using AutoDock Vina
 - Analyze binding affinities and identify promising drug-like compounds
-- Visualize protein–ligand complexes and binding interactions
-- Post-docking analysis using RDKit and Python
+- Perform ADMET profiling of top candidates
+- Multivariate analysis using PCA and hierarchical clustering heatmap
 
 ---
 
@@ -26,9 +26,9 @@ This project presents a complete *virtual screening and molecular docking pipeli
 
 | PDB ID | Description |
 |--------|-------------|
-| *6M0J* | Spike RBD — Receptor Binding Domain |
-| *6VXX* | Whole Spike Glycoprotein |
-| *7DWZ* | S2 Fusion Domain |
+| **6M0J** | Spike RBD — Receptor Binding Domain (42 compounds) |
+| **6VXX** | Whole Spike Glycoprotein (16 compounds) |
+| **7DWZ** | S2 Fusion Domain (25 compounds) |
 
 ---
 
@@ -41,25 +41,31 @@ This project presents a complete *virtual screening and molecular docking pipeli
 | Open Babel | File format conversion and energy minimization |
 | Ubuntu Linux | Docking environment |
 | Bash Scripting | Automated batch docking workflows |
-| Python (RDKit) | Post-docking analysis and visualization |
+| Python + RDKit | Post-docking analysis and visualization |
 | Pandas / Matplotlib | Data analysis and charting |
+| ADMETlab 3.0 | ADMET property prediction |
+| ClustVis | PCA and heatmap visualization |
 
 ---
 
 ## 📁 Repository Structure
 
-
-sars-cov2-spike-inhibitor-analysis/
+```
+sars-cov2-spike-inhibitor-screening/
 │
 ├── sars_cov2_inhibitor_analysis.ipynb   ← RDKit analysis notebook
-├── results.csv                           ← Docking scores (all 85 compounds)
+├── results.csv                           ← Docking scores (85 compounds)
 ├── full_analysis.csv                     ← Compounds + molecular properties
 ├── top_drug_like_hits.csv                ← Top Lipinski-filtered candidates
-├── sars_cov2_analysis.png                ← Analysis charts
+├── clustvis_pca_input.csv                ← PCA input data
+├── clustvis_pca_with_groups.csv          ← PCA input with protein groups
+├── sars_cov2_analysis.png                ← RDKit analysis charts
 ├── top_inhibitors.png                    ← 2D structures of top compounds
-├── workflow.md                           ← Docking commands and methodology
+├── clustvisPCA.pdf                       ← PCA plot (colored by protein)
+├── clustvisHeatmap.pdf                   ← Hierarchical clustering heatmap
+├── ADMET_Analysis_Table.pdf              ← Full ADMET analysis table
 └── README.md
-
+```
 
 ---
 
@@ -98,14 +104,27 @@ sars-cov2-spike-inhibitor-analysis/
 - Identified top hits per protein target
 - Generated visualizations and saved results
 
+### Part 3 — ADMET Analysis (ADMETlab 3.0)
+
+- Predicted absorption, distribution, metabolism, excretion and toxicity
+- Evaluated GI absorption, BBB permeability, P-gp substrate activity
+- Assessed CYP enzyme inhibition profile (CYP1A2, 2C19, 2C9, 2D6, 3A4)
+- Toxicity screening: AMES, hERG blockade, hepatotoxicity, carcinogenicity
+
+### Part 4 — Multivariate Analysis (ClustVis)
+
+- PCA performed on 82 compounds using 8 physicochemical parameters
+- Hierarchical clustering heatmap for pattern identification
+- Compounds colored by protein target for group analysis
+
 ---
 
 ## 💻 Key Commands Used
 
-### Ligand Preparation (Open Babel)
+### Ligand Preparation
 
-bash
-# Convert SDF to PDB with 3D coordinates
+```bash
+# Convert SDF to PDB
 for f in *.sdf; do
     obabel "$f" -O "${f%.sdf}.pdb" --gen3d --addh
 done
@@ -115,15 +134,15 @@ for f in *.pdb; do
     obabel "$f" -O "${f%.pdb}_min.pdb" --minimize --ff MMFF94
 done
 
-# Convert PDB to PDBQT
+# Convert to PDBQT
 for f in *_min.pdb; do
     obabel "$f" -O "${f%.pdb}.pdbqt"
 done
+```
 
+### Molecular Docking
 
-### Molecular Docking (AutoDock Vina)
-
-bash
+```bash
 # Target 1: 6M0J — Spike RBD
 for f in *.pdbqt; do
   vina --receptor ../6moj.pdbqt \
@@ -157,46 +176,93 @@ for f in *.pdbqt; do
          --out "${f%.pdbqt}_out.pdbqt"
   fi
 done
-
+```
 
 ### Extract Binding Energies
 
-bash
+```bash
 for f in *_out.pdbqt; do
-    energy=$(grep "REMARK VINA RESULT" "$f" | head -n 1 | awk '(print $4)')
+    energy=$(grep "REMARK VINA RESULT" "$f" | head -n 1 | awk '{print $4}')
     echo "$(basename "$f" _out.pdbqt),$energy"
 done > results.csv
-
-
-### PyMOL Visualization
-
-python
-# Load and display docked complex
-hide everything
-show cartoon
-show sticks, emodin_out
-color red, emodin_out
-zoom emodin_out
-
-# Export image
-bg_color white
-ray 3000,3000
-png docking_complex.png
-
+```
 
 ---
 
 ## 📊 Results
 
+### Docking Results
+
 ![Analysis Chart](sars_cov2_analysis.png)
 
-### Key Findings
-- Screened *85 compounds* across *3 SARS-CoV-2 spike protein targets*
-- Performed *automated batch docking* using Bash scripting in Ubuntu
-- Identified top drug-like inhibitors per target using Lipinski Rule of 5
-- Generated comparative binding affinity datasets for all targets
-- Full results available in full_analysis.csv
-- Top drug-like candidates in top_drug_like_hits.csv
+### Top Drug-Like Inhibitors Per Target
+
+| Protein | Top Compound | Binding Energy | MW | LogP |
+|---------|-------------|----------------|-----|------|
+| **6M0J** | Lumacaftor | -8.60 kcal/mol | 452.41 | 4.75 |
+| **6VXX** | Hesperidin | -10.41 kcal/mol | 302.28 | 2.52 |
+| **7DWZ** | Oxyberberine | -8.58 kcal/mol | 351.36 | 2.97 |
+
+### Top 2D Structures
+
+![Top Inhibitors](top_inhibitors.png)
+
+---
+
+## 💊 ADMET Analysis
+
+ADMET properties of the top 10 compounds predicted using **ADMETlab 3.0**.
+
+| Compound | Target | Docking Score | GI Absorption | BBB | AMES | hERG | Hepatotoxicity |
+|----------|--------|--------------|---------------|-----|------|------|----------------|
+| Hesperidin | 6VXX | -10.41 | Low | No | High | Low | Moderate |
+| Lumacaftor | 6M0J | -8.60 | High | No | Low | Moderate | Low |
+| Oxyberberine | 7DWZ | -8.58 | High | Yes | High | Moderate | High |
+| Mevastatin | 7DWZ | -8.16 | High | Yes | Moderate | Low | Moderate |
+| Celecoxib | 6VXX | -8.34 | High | No | Low | Moderate | High |
+| Meloxicam | 6VXX | -8.23 | High | No | Low | Low | Moderate |
+| Andrographolide | 7DWZ | -8.06 | High | No | Moderate | Low | High |
+| Indomethacin | 6VXX | -7.84 | High | Yes | Low | Low | High |
+| SSAA09E3 | 6M0J | -7.89 | High | Yes | High | High | High |
+| Brazilin | 6VXX | -8.34 | High | No | Low | Low | High |
+
+### Lead Candidate Highlights
+- **Lumacaftor** — High GI absorption, low AMES toxicity, low hERG risk, best 6M0J binder
+- **Meloxicam** — Lowest AMES (0.05) and hERG (0.005) among all candidates
+- **Andrographolide** — No CYP enzyme inhibition across all 5 enzymes
+
+📄 Full ADMET table: [ADMET_Analysis_Table.pdf](ADMET_Analysis_Table.pdf)
+
+---
+
+## 📈 Multivariate Analysis
+
+### PCA — Principal Component Analysis
+
+PCA was performed on 82 compounds using 8 physicochemical parameters.
+PC1 and PC2 explain **45.3%** and **20.3%** of total variance (**65.6% cumulative**).
+Compounds are colored by protein target: 6M0J (red), 6VXX (blue), 7DWZ (green).
+
+📄 PCA Plot: [clustvisPCA.pdf](clustvisPCA.pdf)
+
+**Key observations:**
+- All 3 protein groups overlap — compounds share similar physicochemical space
+- 6M0J compounds show widest chemical diversity
+- 7DWZ compounds cluster more tightly — similar drug-like properties
+- Outlier compounds on far left represent high molecular weight structures
+
+### Heatmap — Hierarchical Clustering
+
+Hierarchical clustering heatmap showing relationship between compounds
+and their physicochemical properties across all 3 protein targets.
+
+📄 Heatmap: [clustvisHeatmap.pdf](clustvisHeatmap.pdf)
+
+**Key observations:**
+- Compounds cluster into distinct groups based on molecular properties
+- Flavonoids and polyphenols (Hesperidin, Catechin gallate, EGCG) cluster together
+- Statins (Mevastatin, Lovastatin, Simvastatin) form a tight cluster
+- High MW antibiotics (Azithromycin, Erythromycin, Clarithromycin) separate clearly
 
 ---
 
@@ -205,27 +271,29 @@ png docking_complex.png
 - Automated docking of 85 ligands using AutoDock Vina batch processing
 - Screened against three SARS-CoV-2 spike protein targets (6M0J, 6VXX, 7DWZ)
 - Built complete end-to-end virtual screening pipeline
-- Post-docking RDKit analysis with Lipinski filtering
-- Identified compounds with favorable binding interactions with viral targets
+- Post-docking RDKit analysis with Lipinski Rule of 5 filtering
+- ADMET profiling of top 10 lead candidates
+- PCA and hierarchical clustering for multivariate compound analysis
+- Identified Hesperidin (-10.41 kcal/mol) as strongest binder at 6VXX target
 
 ---
 
 ## 💡 Skills Demonstrated
 
-Molecular Docking Structure-Based Drug Design Virtual Screening
-Bioinformatics Linux Command Line Bash Scripting
-Python RDKit Scientific Data Analysis
-Protein–Ligand Interaction Analysis 
-Computational Drug Discovery
-AutoDock Vina PyMOL Open Babel
+`Molecular Docking` `Structure-Based Drug Design` `Virtual Screening`
+`Bioinformatics` `Linux Command Line` `Bash Scripting`
+`Python` `RDKit` `ADMET Analysis` `PCA` `Hierarchical Clustering`
+`Scientific Data Analysis` `Protein–Ligand Interaction Analysis`
+`AutoDock Vina` `PyMOL` `Open Babel` `ADMETlab` `ClustVis`
 
 ---
 
 ## 👩‍🔬 Author
 
-*Dimple Srivastava*
-MSc Biotechnology | J.C. Bose University (YMCA), Faridabad
+**Dimple Srivastava**  
+MSc Biotechnology | J.C. Bose University (YMCA), Faridabad  
 Dissertation Research | Jamia Hamdard, Department of Virology, New Delhi
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/dimple-srivastava-1a15142b7)
 [![GitHub](https://img.shields.io/badge/GitHub-Profile-black)](https://github.com/dimple-srivastava-bio-24)
+
